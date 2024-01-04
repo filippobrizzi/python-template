@@ -2,7 +2,7 @@
 
 Template to create your python project.
 
-## Customization
+## Customization
 
 * To use the template you will need to update the naming to match the one of your project:
   * Find all instances of `myenv` and replace them with the name of your project/repo.
