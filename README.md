@@ -29,7 +29,9 @@ The first time you install it it will create the Conda environment file with the
 
 The file name has the format `environement-[Linux, MacOSX]-<arch>-<conda version>-<poetry version>.yml`.
 
-### Add new python package dependency.
+
+### Add new python package dependency.
+
 Add a new entry in `pyproject.toml` under `[tool.poetry.dependencies]`.
 
 If you don't care about the version and want the latest set the version to `= "*"` otherwise you can specify an exact version, `= "1.3.1"` or a minimum one `>= "1.4.2"`.
@@ -52,5 +54,6 @@ Add your script to `[tool.poetry.scripts]` in `pyproject.toml`.
 poetry run example
 ```
 
-## Tools
+## Tools
+
 The repo comes with a set of tools for code quality, please have a look at the `Makefile` file for a list of available command.
