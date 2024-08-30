@@ -24,14 +24,13 @@ else
 fi
 ARCH=$(uname -m)
 ENVIRONMENT="environment-${SYSTEM}-${ARCH}-${CONDA_VERSION}-${POETRY_VERSION}.yml"
+if [ "$EUID" -ne 0 ]; then
+    SUDO=sudo
+else
+    SUDO=""
+fi
 
 function install_dependencies() {
-    if [ "$EUID" -ne 0 ]; then
-        SUDO=sudo
-    else
-        SUDO=""
-    fi
-
     if [ "${SYSTEM}" == "Linux" ]; then
         ${SUDO} apt update && ${SUDO} apt install -y curl build-essential
     fi
@@ -44,10 +43,13 @@ function install_conda() {
         CONDA_SCRIPT="Miniconda3-${CONDA_VERSION}-${SYSTEM}-${ARCH}.sh"
         curl https://repo.anaconda.com/miniconda/${CONDA_SCRIPT} -o /tmp/${CONDA_SCRIPT}
         chmod +x /tmp/${CONDA_SCRIPT}
-        /tmp/${CONDA_SCRIPT}
+        
+        export CONDA_DIR=/opt/conda
+        ${SUDO} mkdir -p /opt
+        ${SUDO} /tmp/${CONDA_SCRIPT} -b -p ${CONDA_DIR}
 
-        export PATH=${PATH}:${HOME}/miniconda3/bin
-
+        export PATH=${CONDA_DIR}/bin:$PATH
+        
         conda config --set auto_activate_base false
 
         SHELL_TYPE=$(echo "${SHELL}" | sed 's/^.*\///g')
